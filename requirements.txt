@@ -1,0 +1,4 @@
+verovio
+# pywebview
+scipy
+numpy

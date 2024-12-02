@@ -1,0 +1,8 @@
+.venv
+*.sf2
+*.wav
+output_G-2__c_v3
+*.svg
+__pycache__
+.vscode
+convert_log.txt

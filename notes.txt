@@ -1,0 +1,10 @@
+ffmpeg -i Spring\ 2024.mp4 -ss 00:19:02.000 -to 00:19:32.000 -filter:a "highpass=f=138, lowpass=f=830" -ac 1 solo_bandpass.wav
+
+
+need ffmpeg, fluidsynth
+
+-filter:a "volume=8.0"
+
+
+
+source ~/cse570venv/.venv/bin/activate
