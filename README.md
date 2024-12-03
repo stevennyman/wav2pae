@@ -26,6 +26,7 @@ You'll need:
     * `fluidsynth`
     * `sox` (to remove silence from generated audio snippets, ex: `for file in *.wav; do sox "$file" "../output_G-2__c_v3/$file" silence -l 1 0.1 0.5% -1 0.1 0.5%; done`)
 * (Optional) [Soundfont file for generating audio from PAE snippets](https://ftp.osuosl.org/pub/musescore/soundfont/MuseScore_General/MuseScore_General.sf2), place in working directory
+* (Optional) [RISM database](https://opac.rism.info/fileadmin/user_upload/lod/update/rismAllMARCXML.zip), ([source webpage](https://opac.rism.info/main-menu-/kachelmenu/data)). The currently used version of the file is `rism_240119.xml`, released in January 2024.
 * (Optional) Additional useful system packages:
     * `git` for repo updates
     * `bash`
