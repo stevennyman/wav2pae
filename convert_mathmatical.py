@@ -42,7 +42,7 @@ DETECT_MEASURES = False # doesn't work with pickup notes
 DO_POSTPROCESS = True
 USE_COMPARABLE = True
 
-USE_WINDOWS = True
+SVG_NO_POPUP = True
 
 nflist = json.load(open("pitch_to_note.json", "r"))
 
@@ -63,7 +63,7 @@ def displayPAE_inner(outs, title, y=None):
     }'''
     )
 
-    if USE_WINDOWS:
+    if SVG_NO_POPUP:
         o = tk.renderToSVGFile("out_"+title+".svg")
         # os.system("pythonw.exe view_pae.py "+title+" out_"+title+".svg")
         return

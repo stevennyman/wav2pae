@@ -6,3 +6,4 @@ output_G-2__c_v3
 __pycache__
 .vscode
 convert_log.txt
+*.mid
