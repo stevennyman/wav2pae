@@ -138,7 +138,7 @@ def mainloop(desfile, tmpd, measure_length, detect_rests=False, do_postprocess=T
         while_ran = False
 
         # merge 1 frame with next if a half step above/below other (accidental/sharp)
-        while outlcnt != len(outl)-1 and outl[outlcnt+1][1] != "-" and pitchcode != "-" and abs(pikeys.index(str(outl[outlcnt+1][1])) - pikeys.index(pitchcode)) == 1:
+        while outlcnt < len(outl)-1 and outl[outlcnt+1][1] != "-" and pitchcode != "-" and abs(pikeys.index(str(outl[outlcnt+1][1])) - pikeys.index(pitchcode)) == 1:
             while_ran = True
             do_cont = False
             if pilist[str(outl[outlcnt+1][1])][0][0] == "x": # and outl[outlcnt+1][1] < 4:
