@@ -47,8 +47,9 @@ SVG_NO_POPUP = True
 nflist = json.load(open("pitch_to_note.json", "r"))
 
 def displayPAE(outs, title, y=None):
-    mythread = Process(target=displayPAE_inner, args=(outs,title,y))
-    mythread.start()
+    displayPAE_inner(outs, title, y)
+    # mythread = Process(target=displayPAE_inner, args=(outs,title,y))
+    # mythread.start()
 
 def displayPAE_inner(outs, title, y=None):
     tk = verovio.toolkit()
@@ -100,7 +101,7 @@ def mainloop_convert(songid):
         for line in open(SOURCE_CSV, "r"):
             if line.startswith(songid+","):
                 original_incipit = line.split(",", 2)[-1].replace('"', '')
-                print("ORIGINAL INCIPIT", original_incipit)
+                print("\nORIGINAL INCIPIT:", original_incipit)
                 found_csv = True
                 displayPAE(original_incipit, "Original", y=0)
                 
@@ -231,31 +232,48 @@ def mainloop_convert(songid):
 
     outs = outs.replace("{}", "")
 
-    print(outs)
+    print("GENERATED INCIPIT:", outs)
     displayPAE(outs, "Result", y=600)
 
-try:
-    while True:
-        print("Detect [R]ests: "+str(DETECT_RESTS)+", Detect [M]easures: "+str(DETECT_MEASURES)+", Do [P]ost-processing: "+str(DO_POSTPROCESS)+", Use [C]ompareable: "+str(USE_COMPARABLE))
-        userinput = input("Input song id: ")
-        luserinput = userinput.lower()
-        if luserinput == "r":
-            DETECT_RESTS = not DETECT_RESTS
-        elif luserinput == "m":
-            DETECT_MEASURES = not DETECT_MEASURES
-        elif luserinput == "p":
-            DO_POSTPROCESS = not DO_POSTPROCESS
-        elif luserinput == "c":
-            USE_COMPARABLE = not USE_COMPARABLE
-        elif luserinput == "q" or luserinput == "x":
-            break
-        else:
-            mainloop_convert(userinput)
-        logfile.write(userinput+"\n")
-except:
+import sys
+from record import recordSample
+import subprocess
+
+if __name__ == "__main__":
+    sampled = False
+    if len(sys.argv) > 1 and sys.argv[1] == '-R':
+        recordSample('recordedSample.wav')
+        USE_COMPARABLE = not USE_COMPARABLE
+
+        # Run sox
+        subprocess.run(["sox", "recordedSample.wav", "recordSampleShortened.wav" , "silence", "-l", "1", "0.1", "0.5%", "-1", "0.1", "0.5%"])
+
+        mainloop_convert('recordSampleShortened.wav')
+
+        sys.exit(0)
+
+    try:
+        while True:
+            print("Detect [R]ests: "+str(DETECT_RESTS)+", Detect [M]easures: "+str(DETECT_MEASURES)+", Do [P]ost-processing: "+str(DO_POSTPROCESS)+", Use [C]ompareable: "+str(USE_COMPARABLE))
+            userinput = input("Input song id: ")
+            luserinput = userinput.lower()
+            if luserinput == "r":
+                DETECT_RESTS = not DETECT_RESTS
+            elif luserinput == "m":
+                DETECT_MEASURES = not DETECT_MEASURES
+            elif luserinput == "p":
+                DO_POSTPROCESS = not DO_POSTPROCESS
+            elif luserinput == "c":
+                USE_COMPARABLE = not USE_COMPARABLE
+            elif luserinput == "q" or luserinput == "x":
+                break
+            else:
+                mainloop_convert(userinput)
+            logfile.write(userinput+"\n")
+    except:
+        tmpd.cleanup()
+        logfile.close()
+        raise
+
     tmpd.cleanup()
     logfile.close()
-    raise
-
-tmpd.cleanup()
-logfile.close()
