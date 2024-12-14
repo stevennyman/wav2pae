@@ -34,7 +34,7 @@ tmpd = TemporaryDirectory()
 logfile = open("convert_log.txt", "a")
 
 SOURCE_CSV = "G-2__c_v3.csv"
-WAV_BASE = "output_G-2__c_v3/"
+WAV_BASE = "output_G-2__c_v4/"
 measure_length = 160
 
 DETECT_RESTS = False
