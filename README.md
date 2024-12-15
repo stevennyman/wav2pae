@@ -44,6 +44,7 @@ You'll need:
 * `paetowav.py` can convert a PAE string to a WAV file, useful for audibly comparing how close a generated PAE file sounds to its original source file. This file requires some of the optional requirements listed above. Takes no arguments, requests parameters interactively. Does not currently remove trailing silence from conversion process.
 * `pitch_file_pair_convert_number.py` is not intended for direct interactive usage but is imported as a module for the main `convert_mathmatical.py` script
 * `README.md` is this file
+* `record.py` is not intended for direct interactive usage but is imported as a module for the main `convert_mathmatical.py` script when recording audio from a microphone
 * `view_pae.py` display an SVG string in a popup window. This file requires some of the optional requirements listed above. First CLI argument is window title, second CLI argument is SVG string. Not recommended for use.
 
 ## Usage
