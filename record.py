@@ -1,7 +1,7 @@
-import pyaudio
 import wave
 
 def recordSample(fileName):
+    import pyaudio
     chunk = 1024
     sample_format = pyaudio.paInt16
     channels = 1

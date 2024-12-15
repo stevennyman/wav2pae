@@ -22,8 +22,9 @@ You'll need:
 * (Optional) The following modules are only required for certain types of usage:
     * `pywebview` if you would like the original and result music SVG files to be rendered in a pop-up window (disabled by default, can change with `SVG_NO_POPUP`). Works poorly under WSL. `pywebview` requires installation of various additional system dependencies using both `pip` and `apt`. Additionally required if using `view_pae.py`.
     * `lxml` if generating test CSVs/WAVs from a RISM database export
-* (Optional) System package for generating audio from PAE snippets:
-    * `fluidsynth`
+    * `pyaudio` if recording from a microphone
+* (Optional) System package for generating audio from PAE snippets or collecting audio from microphone:
+    * `fluidsynth` (not required when collecting audio from microphone)
     * `sox` (to remove silence from generated audio snippets, ex: `for file in *.wav; do sox "$file" "../output_G-2__c_v3/$file" silence -l 1 0.1 0.5% -1 0.1 0.5%; done`)
 * (Optional) [Soundfont file for generating audio from PAE snippets](https://ftp.osuosl.org/pub/musescore/soundfont/MuseScore_General/MuseScore_General.sf2), place in working directory
 * (Optional) [RISM database](https://opac.rism.info/fileadmin/user_upload/lod/update/rismAllMARCXML.zip), ([source webpage](https://opac.rism.info/main-menu-/kachelmenu/data)). The currently used version of the file is `rism_240119.xml`, released in January 2024.
@@ -46,9 +47,9 @@ You'll need:
 * `view_pae.py` display an SVG string in a popup window. This file requires some of the optional requirements listed above. First CLI argument is window title, second CLI argument is SVG string. Not recommended for use.
 
 ## Usage
-This section focuses on the main `convert_mathmatical.py` script. The script takes no arguments.
+This section focuses on the main `convert_mathmatical.py` script. The script takes no arguments by default.
 
-The script will loop, asking for a song id each time. In its default mode, it will only take song IDs as listed in `G-2__c_v3.csv`, including leading zeroes or `.wav` is optional. If `_` is not included in the provided song ID, `_0` is assumed (these are sub IDs when multiple incipits are provided for a RISM entry). The script will first update `out_Original.svg` with the ground truth music notation, then will run the algorithm and update `out_Result.svg`.
+The script will loop, asking for a song id each time. In its default mode, it will only take song IDs as listed in `G-2__c_v3.csv`, including leading zeroes or `.wav` is optional. If `_` is not included in the provided song ID, `_0` is assumed (these are sub IDs when multiple incipits are provided for a RISM entry). The script will first update `out_Original.svg` with the ground truth music notation, then will run the algorithm and update `out_Result.svg`. If run with `-R` the script will instead record input from the microphone until the user presses Ctrl-C on the keyboard, and there will be no ground truth musical notation.
 
 A significant amount of output is printed to console, including the original, ground truth incipit and `ffmpeg` conversion output (reduction to 0.25x speed). Next, lines of output for each 50ms interval representing the frequency index in the pitch list, the normalized frequency, the original frequency, and the intensity of the frequency are printed. Next a nearly-raw frequency sequence is printed (the number of 50ms intervals followed by the dominant frequency at that interval). (End of first loop in `pitch_file_pair_convert_number.py`.) At this point the only processing is that some intervals with the same frequency appear next to each other, this is an indication that the same note was likely played twice as the intensity increased significantly after decreasing. The following lines are effectively a repetition of the previous line of output but are printed as they are processed by the heuristic algorithm. Next, a processed frequency sequence is printed. (End of second loop in `pitch_file_pair_convert_number.py`) followed by the resulting PAE code (loop in `convert_mathmatical.py`).
 
@@ -73,6 +74,7 @@ Implemented heuristics/improvements over raw data include, but are not necessari
 * Short notes off by a half step (sharp/flat only) are converted to the natural note
 * Rests are not really detectable - try when below certain intensity and decreasing or already rest
 * Slow down song to 0.25x (ffmpeg)
+
 Many but not all of these are controlled by `Do [P]ost-processing` option.
 
 Other notes/known limitations:
