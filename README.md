@@ -18,11 +18,12 @@ You'll need:
 * The following Visual Studio Code extension is recommended:
     * `@analytic-signal.preview-html` for live-updating SVG preview
 * The following files should be made available in the working directory when running/evaluating the scripts:
-    * an extracted copy of [output_G-2__c_v3.zip](https://drive.google.com/file/d/1UsxXUPUxAVm7Wa8YMOCR5gUUwqsnI4cy/view). The root directory from the zip file should be preserved when extracting. Zip file is a 10GB download, extracts to about 16.4GB and contains approximately 81,000 sample audio files generated from the Plaine and Easie incipits in the RISM database with leading/trailing silences removed. This selection is all songs in the database that are in the `4/4` or `c` time signatures, in the clef of `G-2`, in the key of concert C (key signature is blank). The PAE code data for these files is included in the repository in `G-2__c_v3.csv`.
+    * an extracted copy of [output_G-2__c_v4.zip](https://drive.google.com/file/d/17dPurlLAqxHw_19Rl1P68BKdgAD6ko8F/view). The root directory from the zip file should be preserved when extracting. Zip file is a 10GB download, extracts to about 16.4GB and contains approximately 81,000 sample audio files generated from the Plaine and Easie incipits in the RISM database with leading/trailing silences removed. This selection is all songs in the database that are in the `4/4` or `c` time signatures, in the clef of `G-2`, in the key of concert C (key signature is blank). The PAE code data for these files is included in the repository in `G-2__c_v3.csv`.
 * (Optional) The following modules are only required for certain types of usage:
     * `pywebview` if you would like the original and result music SVG files to be rendered in a pop-up window (disabled by default, can change with `SVG_NO_POPUP`). Works poorly under WSL. `pywebview` requires installation of various additional system dependencies using both `pip` and `apt`. Additionally required if using `view_pae.py`.
     * `lxml` if generating test CSVs/WAVs from a RISM database export
     * `pyaudio` if recording from a microphone
+    * `pydub` if using `trim_audio.py`
 * (Optional) System package for generating audio from PAE snippets or collecting audio from microphone:
     * `fluidsynth` (not required when collecting audio from microphone)
     * `sox` (to remove silence from generated audio snippets, ex: `for file in *.wav; do sox "$file" "../output_G-2__c_v3/$file" silence -l 1 0.1 0.5% -1 0.1 0.5%; done`)
@@ -45,6 +46,7 @@ You'll need:
 * `pitch_file_pair_convert_number.py` is not intended for direct interactive usage but is imported as a module for the main `convert_mathmatical.py` script
 * `README.md` is this file
 * `record.py` is not intended for direct interactive usage but is imported as a module for the main `convert_mathmatical.py` script when recording audio from a microphone
+* `trim_audio.py` detects and removes silence from the end of audio files
 * `view_pae.py` display an SVG string in a popup window. This file requires some of the optional requirements listed above. First CLI argument is window title, second CLI argument is SVG string. Not recommended for use.
 
 ## Usage
